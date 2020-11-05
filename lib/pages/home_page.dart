@@ -129,7 +129,7 @@ class LeaderPhone extends StatelessWidget {
     return Container(
       child: InkWell(
         onTap: (){
-
+          _launchURL();
         },
         child: Image.network(leaderImage),
       ),
@@ -137,11 +137,12 @@ class LeaderPhone extends StatelessWidget {
   }
 
   void _launchURL() async{
-    String url = 'tel:' + leaderPhone;
+    print('电话号码：${leaderPhone}');
+    String url = 'tel:' + leaderPhone;//'https://www.baidu.com';
     if(await canLaunch(url)){
       await launch(url);
     }else{
-      throw 'url无法访问';
+      throw '============= url无法访问';
     }
   }
 }
