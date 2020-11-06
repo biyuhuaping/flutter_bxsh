@@ -35,6 +35,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
             String leaderImage = data['data']['shopInfo']['leaderImage'];
             String leaderPhone = data['data']['shopInfo']['leaderPhone'];
             List<Map> recommendList = (data['data']['recommend'] as List).cast();
+            String floor1Title = data['data']['floor1Pic']['PICTURE_ADDRESS'];
+            String floor2Title = data['data']['floor2Pic']['PICTURE_ADDRESS'];
+            String floor3Title = data['data']['floor3Pic']['PICTURE_ADDRESS'];
+            List<Map> floor1  = (data['data']['floor1'] as List).cast();
+            List<Map> floor2  = (data['data']['floor2'] as List).cast();
+            List<Map> floor3  = (data['data']['floor3'] as List).cast();
 
             return SingleChildScrollView(
               child: Column(
@@ -44,6 +50,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                   AdBanner(adPicture),
                   LeaderPhone(leaderImage, leaderPhone),
                   Recommend(recommendList),
+                  FloorTitle(floor1Title),
+                  FloorContent(floor1),
+                  FloorTitle(floor2Title),
+                  FloorContent(floor2),
+                  FloorTitle(floor3Title),
+                  FloorContent(floor3),
                 ],
               ),
             );
@@ -239,6 +251,74 @@ class Recommend extends StatelessWidget {
         itemBuilder: (context, index){
           return _item(index);
         },
+      ),
+    );
+  }
+}
+
+//楼层标题
+class FloorTitle extends StatelessWidget {
+  final String picture_address;
+  FloorTitle(this.picture_address);
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: Image.network(picture_address),
+    );
+  }
+}
+
+//楼层商品列表
+class FloorContent extends StatelessWidget {
+  final List floorGoodsList;
+  FloorContent(this.floorGoodsList);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          _firstRow(context),
+          _otherGoods(context)
+        ],
+      ),
+    );
+  }
+
+  Widget _firstRow(context){
+    return Row(
+      children: <Widget>[
+        _goodsItem(context,floorGoodsList[0]),
+        Column(
+          children: <Widget>[
+            _goodsItem(context,floorGoodsList[1]),
+            _goodsItem(context,floorGoodsList[2]),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _otherGoods(context){
+    return Row(
+      children: <Widget>[
+        _goodsItem(context,floorGoodsList[3]),
+        _goodsItem(context,floorGoodsList[4]),
+      ],
+    );
+  }
+
+
+  Widget _goodsItem(context, Map goods){
+    return Container(
+      width: ScreenUtil().setWidth(375),
+      child: InkWell(
+        onTap: (){
+          // Application.router.navigateTo(context, "/detail?id=${goods['goodsId']}");
+        },
+        child: Image.network(goods['image']),
       ),
     );
   }
