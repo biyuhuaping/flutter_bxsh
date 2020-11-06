@@ -43,7 +43,7 @@ class _IndexPageState extends State<IndexPage> {
         title: Text('会员中心')),
   ];
 
-  final List tabbarViews = [
+  final List<Widget> tabbarViews = [
     HomePage(),
     CateGoryPage(),
     CartPage(),
@@ -83,7 +83,10 @@ class _IndexPageState extends State<IndexPage> {
           });
         },
       ),
-      body: currentPage,
+      body: IndexedStack(
+        index: currentIndex,
+        children: tabbarViews,
+      )
     );
   }
 }
