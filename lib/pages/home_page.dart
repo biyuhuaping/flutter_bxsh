@@ -4,6 +4,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -14,13 +15,15 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   int page = 1;
   List<Map> hotGoodsList = [];
 
+  EasyRefreshController _controller = EasyRefreshController();
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     print('1111111111111');
-    _getHotGoods();
+    _getHotGoods(page, true);
     super.initState();
   }
 
@@ -47,24 +50,44 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
             List<Map> floor2  = (data['data']['floor2'] as List).cast();
             List<Map> floor3  = (data['data']['floor3'] as List).cast();
 
-            return SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SwiperDiy(swiper),
-                  TopNavigator(navigatorList),
-                  AdBanner(adPicture),
-                  LeaderPhone(leaderImage, leaderPhone),
-                  Recommend(recommendList),
-                  FloorTitle(floor1Title),
-                  FloorContent(floor1),
-                  FloorTitle(floor2Title),
-                  FloorContent(floor2),
-                  FloorTitle(floor3Title),
-                  FloorContent(floor3),
-                  // HotGoods(),
-                  _hotGoods(),
-                ],
+            return EasyRefresh(
+              controller: _controller,
+              footer: ClassicalFooter(
+                bgColor: Colors.white,
+                textColor: Colors.pink,
+                infoColor: Colors.pink,
+                showInfo: true,
+                // noMoreText: '没有更多数据',
+                // infoText: '加载中',
+                // loadReadyText: '上拉加载……'
               ),
+                child: ListView(
+                  children: <Widget>[
+                    SwiperDiy(swiper),
+                    TopNavigator(navigatorList),
+                    AdBanner(adPicture),
+                    LeaderPhone(leaderImage, leaderPhone),
+                    Recommend(recommendList),
+                    FloorTitle(floor1Title),
+                    FloorContent(floor1),
+                    FloorTitle(floor2Title),
+                    FloorContent(floor2),
+                    FloorTitle(floor3Title),
+                    FloorContent(floor3),
+                    // HotGoods(),
+                    _hotGoods(),
+                  ],
+                ),
+              onRefresh: () async{
+                //刷新
+                page = 1;
+                _getHotGoods(page, true);
+              },
+              onLoad: () async {
+                //加载更多
+                page++;
+                _getHotGoods(page, false);
+              },
             );
           }else{
             return Center(
@@ -76,15 +99,26 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     );
   }
 
-  //火爆商品接口
-  void _getHotGoods(){
+  //火爆商品接口，上拉加载、下拉刷新
+  void _getHotGoods(int page, bool isRefresh){
     var formPage = {'page':page};
     request('homePageBelowConten', formData: formPage).then((value){
       var data = json.decode(value.toString());
       List<Map> newGoodsList = (data['data'] as List ).cast();
+
+      if(page == 1){
+        hotGoodsList.clear();
+      }
+      if(isRefresh){//下拉刷新
+        _controller.resetLoadState();
+      }else{//加载更多
+        if(newGoodsList.length < 20){
+          _controller.finishLoad(success: true, noMore: true);
+        }
+      }
+
       setState(() {
         hotGoodsList.addAll(newGoodsList);
-        page++;
       });
     });
   }
@@ -212,6 +246,7 @@ class TopNavigator extends StatelessWidget {
       height: ScreenUtil().setHeight(260),
       padding: EdgeInsets.all(3.0),
       child: GridView.count(
+        physics: NeverScrollableScrollPhysics(),//禁止滚动
         crossAxisCount: 5,
         padding: EdgeInsets.all(5.0),
         children: navigatorList.map((item){
