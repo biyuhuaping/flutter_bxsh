@@ -6,6 +6,7 @@ import '../model/category.dart';
 import '../model/categoryGoodsList.dart';
 import 'package:provide/provide.dart';
 import '../provide/child_category.dart';
+import '../provide/category_goods_list.dart';
 
 class CateGoryPage extends StatefulWidget {
   @override
@@ -33,7 +34,7 @@ class _CateGoryPageState extends State<CateGoryPage> {
   }
 }
 
-//左侧大类导航
+//左侧导航菜单
 class LeftCaetgoryNav extends StatefulWidget {
   @override
   _LeftCaetgoryNavState createState() => _LeftCaetgoryNavState();
@@ -41,11 +42,12 @@ class LeftCaetgoryNav extends StatefulWidget {
 
 class _LeftCaetgoryNavState extends State<LeftCaetgoryNav> {
   List list = [];
-  var listIndex = 0;
+  var listIndex = 0;//索引
 
   @override
   void initState() {
     _getCategory();
+    _getGoodsList(context);
     super.initState();
   }
 
@@ -76,7 +78,9 @@ class _LeftCaetgoryNavState extends State<LeftCaetgoryNav> {
           listIndex = index;
         });
         var childList = list[index].bxMallSubDto;
+        var categoryId = list[index].mallCategoryId;
         Provide.value<ChildCategory>(context).getChildCategory(childList);
+        _getGoodsList(context,categoryId: categoryId);
       },
       child: Container(
         height: ScreenUtil().setHeight(80),
@@ -102,6 +106,20 @@ class _LeftCaetgoryNavState extends State<LeftCaetgoryNav> {
         Provide.value<ChildCategory>(context).getChildCategory(list[0].bxMallSubDto);
       });
       print(value);
+    });
+  }
+
+  void _getGoodsList(context,{String categoryId}) async{
+    var data = {
+      'categoryId':categoryId == null?'4':categoryId,//categoryId==null?Provide.value<ChildCategory>(context).categoryId:categoryId,
+      'categorySubId':'',//Provide.value<ChildCategory>(context).subId,
+      'page':1
+    };
+    await request('getMallGoods',formData:data ).then((val){
+      var data = json.decode(val.toString());
+      CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
+      // Provide.value<CategoryGoodsList>(context).getGoodsList(goodsList.data);
+      Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
     });
   }
 }
@@ -164,49 +182,26 @@ class CategoryGoodsList extends StatefulWidget {
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
-  List<CategoryListData> list = [];
-  @override
-  void initState() {
-    _getGoodsList();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        width: ScreenUtil().setWidth(570),
-        height: ScreenUtil().setHeight(972),
-        child: ListView.builder(
-          // controller: scrollController,
-          itemCount: list.length,
-          itemBuilder: (context, index){
-            return _ListWidget(index);
-          },
-        ),
-      ),
+    return Provide<CategoryGoodsListProvide>(
+      builder: (context, child, data){
+        return Container(
+          width: ScreenUtil().setWidth(570),
+          height: ScreenUtil().setHeight(972),
+          child: ListView.builder(
+            // controller: scrollController,
+            itemCount: data.goodsList.length,
+            itemBuilder: (context, index){
+              return _listWidget(data.goodsList, index);
+            },
+          ),
+        );
+      },
     );
   }
 
-  void _getGoodsList() async{
-    var data = {
-      'categoryId':'4',//categoryId==null?Provide.value<ChildCategory>(context).categoryId:categoryId,
-      'categorySubId':'',//Provide.value<ChildCategory>(context).subId,
-      'page':1
-    };
-    await request('getMallGoods',formData:data ).then((val){
-      var data = json.decode(val.toString());
-      CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
-      print('>>>>>>>>>>>>>>>>>>>${goodsList.data[0].goodsName}');
-      // // Provide.value<CategoryGoodsList>(context).getGoodsList(goodsList.data);
-      // Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
-      setState(() {
-        list = goodsList.data;
-      });
-    });
-  }
-
-  Widget _ListWidget(index){
+  Widget _listWidget(List newList, index){
     return InkWell(
       onTap: (){
 
@@ -221,11 +216,11 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
         ),
         child: Row(
           children: <Widget>[
-            _goodsImage(index),
+            _goodsImage(newList,index),
             Column(
               children: <Widget>[
-                _goodsName(index),
-                _goodsPrice(index)
+                _goodsName(newList,index),
+                _goodsPrice(newList,index)
               ],
             )
           ],
@@ -235,21 +230,21 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   }
 
   //商品图片
-  Widget _goodsImage(index){
+  Widget _goodsImage(List newList, index){
     return Container(
       // padding: EdgeInsets.all(5.0),
       width: ScreenUtil().setWidth(150),
-      child: Image.network(list[index].image),
+      child: Image.network(newList[index].image),
     );
   }
 
   //商品名称方法
-  Widget _goodsName(index){
+  Widget _goodsName(List newList, index){
     return Container(
       padding: EdgeInsets.all(5.0),
       width: ScreenUtil().setWidth(370),
       child: Text(
-        list[index].goodsName,
+        newList[index].goodsName,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(fontSize: ScreenUtil().setSp(28)),
@@ -258,17 +253,17 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   }
 
   //商品价格方法
-  Widget _goodsPrice(index){
+  Widget _goodsPrice(List newList, index){
     return Container(
       margin: EdgeInsets.only(top: 20),
       width: ScreenUtil().setWidth(370),
       child: Row(
         children: <Widget>[
           Text(
-            '价格：¥${list[index].presentPrice}',
+            '价格：¥${newList[index].presentPrice}',
             style: TextStyle(color: Colors.pink, fontSize: ScreenUtil().setSp(30)),),
           Text(
-            '¥${list[index].oriPrice}',
+            '¥${newList[index].oriPrice}',
             style: TextStyle(
                 color: Colors.black26,
                 decoration: TextDecoration.lineThrough),)
