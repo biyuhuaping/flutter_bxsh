@@ -34,7 +34,7 @@ dependencies:
   flutter_screenutil: ^3.2.0
   url_launcher: ^5.7.10
   flutter_easyrefresh: ^2.1.6
-
+  provide: ^1.0.2
 
 
 #开发环境

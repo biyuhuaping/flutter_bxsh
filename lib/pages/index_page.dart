@@ -68,7 +68,7 @@ class _IndexPageState extends State<IndexPage> {
 
     print('设备像素密度：${ScreenUtil().pixelRatio}');
     print('设备的宽：${ScreenUtil().screenWidth}');
-    print('设备的高：${ScreenUtil().screenWidth}');
+    print('设备的高：${ScreenUtil().screenHeight}');
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
