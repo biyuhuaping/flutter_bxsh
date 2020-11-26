@@ -35,6 +35,9 @@ dependencies:
   url_launcher: ^5.7.10
   flutter_easyrefresh: ^2.1.6
   provide: ^1.0.2
+  fluttertoast: ^7.1.4
+  fluro: ^1.7.8
+
 
 
 #开发环境

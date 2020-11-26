@@ -8,6 +8,7 @@ import 'package:provide/provide.dart';
 import '../provide/child_category.dart';
 import '../provide/category_goods_list.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CateGoryPage extends StatefulWidget {
   @override
@@ -265,19 +266,19 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
                 // },
                 onLoad: () async {
                   //加载更多
-                  // if(Provide.value<ChildCategory>(context).noMoreText=='没有更多了'){
-                  //   Fluttertoast.showToast(
-                  //       msg: "已经到底了",
-                  //       toastLength: Toast.LENGTH_SHORT,
-                  //       gravity: ToastGravity.CENTER,
-                  //       timeInSecForIos: 1,
-                  //       backgroundColor: Colors.pink,
-                  //       textColor: Colors.white,
-                  //       fontSize: 16.0
-                  //   );
-                  // }else{
+                  if(Provide.value<ChildCategory>(context).noMoreText == '没有更多了'){
+                    Fluttertoast.showToast(
+                        msg: "已经到底了",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.pink,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+                  }else{
                     _getMoreList();
-                  // }
+                  }
                 },
               ),
             ),

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import '../routers/application.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -143,7 +144,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
       List<Widget> listWidget = hotGoodsList.map((val){
         return InkWell(
             onTap:(){
-              // Application.router.navigateTo(context,"/detail?id=${val['goodsId']}");
+              Application.router.navigateTo(context,"/detail?id=${val['goodsId']}");
             },
             child: Container(
               width: ScreenUtil().setWidth(372),
@@ -209,7 +210,12 @@ class SwiperDiy extends StatelessWidget {
       width: ScreenUtil().setWidth(750),
       child: Swiper(
         itemBuilder: (BuildContext context, int index){
-          return Image.network("${swiperDataList[index]['image']}");
+          return InkWell(
+            onTap: (){
+              Application.router.navigateTo(context,"/detail?id=${swiperDataList[index]['goodsId']}");
+            },
+            child: Image.network("${swiperDataList[index]['image']}"),
+          );
         },
         itemCount: swiperDataList.length,
         pagination: SwiperPagination(),
@@ -226,7 +232,7 @@ class TopNavigator extends StatelessWidget {
   Widget _gridViewItemUI(BuildContext context, item){
     return InkWell(
       onTap: (){
-
+        // _goCategory(context,index,item['mallCategoryId']);
       },
       child: Column(
         children: <Widget>[
@@ -236,6 +242,17 @@ class TopNavigator extends StatelessWidget {
       ),
     );
   }
+
+  // void _goCategory(context,int index,String categroyId) async {
+  //   await request('getCategory').then((val) {
+  //     var data = json.decode(val.toString());
+  //     CategoryModel category = CategoryModel.fromJson(data);
+  //     List list = category.data;
+  //     Provide.value<ChildCategory>(context).changeCategory(categroyId,index);
+  //     Provide.value<ChildCategory>(context).getChildCategory( list[index].bxMallSubDto,categroyId);
+  //     Provide.value<CurrentIndexProvide>(context).changeIndex(1);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -336,10 +353,10 @@ class Recommend extends StatelessWidget {
   }
 
   //商品单独项方法
-  Widget _item(index){
+  Widget _item(context,index){
     return InkWell(
       onTap: (){
-        // Application.router.navigateTo(context,"/detail?id=${recommendList[index]['goodsId']}");
+        Application.router.navigateTo(context,"/detail?id=${recommendList[index]['goodsId']}");
       },
       child: Container(
         width: ScreenUtil().setWidth(250),
@@ -376,7 +393,7 @@ class Recommend extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: recommendList.length,
         itemBuilder: (context, index){
-          return _item(index);
+          return _item(context,index);
         },
       ),
     );
@@ -443,7 +460,7 @@ class FloorContent extends StatelessWidget {
       width: ScreenUtil().setWidth(375),
       child: InkWell(
         onTap: (){
-          // Application.router.navigateTo(context, "/detail?id=${goods['goodsId']}");
+          Application.router.navigateTo(context, "/detail?id=${goods['goodsId']}");
         },
         child: Image.network(goods['image']),
       ),
