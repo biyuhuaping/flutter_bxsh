@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
 import '../provide/details_info.dart';
 import './details_page/details_top_area.dart';
+import './details_page/details_explain.dart';
+import './details_page/details_tabBar.dart';
+import './details_page/details_web.dart';
+// import './details_page/details_bottom.dart';
 
 class DetailsPage extends StatelessWidget {
   final String goodsId;
@@ -27,9 +31,9 @@ class DetailsPage extends StatelessWidget {
                 ListView(
                   children: <Widget>[
                     DetailsTopArea(),
-                    // DetailsExplain(),
-                    // DetailsTabBar(),
-                    // DetailsWeb(),
+                    DetailsExplain(),
+                    DetailsTabBar(),
+                    DetailsWeb(),
                   ],
                 ),
                 // Positioned(
