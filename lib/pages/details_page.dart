@@ -5,7 +5,7 @@ import './details_page/details_top_area.dart';
 import './details_page/details_explain.dart';
 import './details_page/details_tabBar.dart';
 import './details_page/details_web.dart';
-// import './details_page/details_bottom.dart';
+import './details_page/details_bottom.dart';
 
 class DetailsPage extends StatelessWidget {
   final String goodsId;
@@ -36,11 +36,11 @@ class DetailsPage extends StatelessWidget {
                     DetailsWeb(),
                   ],
                 ),
-                // Positioned(
-                //     bottom: 0,
-                //     left: 0,
-                //     child: DetailsBottom()
-                // )
+                Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: DetailsBottom()
+                )
               ],
             );
           }else{

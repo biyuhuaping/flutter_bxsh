@@ -38,6 +38,7 @@ dependencies:
   fluttertoast: ^7.1.4
   fluro: ^1.7.8
   flutter_html: ^1.1.0
+  shared_preferences: ^0.5.2
 
 
 
