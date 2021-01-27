@@ -1,8 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provide/provide.dart';
+import '../provide/cart.dart';
+import './cart_page/cart_item.dart';
+import './cart_page/cart_bottom.dart';
 
 
-class CartPage extends StatefulWidget {
+
+class CartPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+        title: Text('购物车'),
+        ),
+      body: FutureBuilder(
+        future: _getCartInfo(context),
+        builder: (context, snapshot){
+          if(snapshot.hasData){
+            return Stack(
+              children: <Widget>[
+                Provide<CartProvide>(
+                builder: (context, child, childCategory){
+                  List cartList = Provide.value<CartProvide>(context).cartList;
+                  return ListView.builder(
+                    itemCount: cartList.length,
+                    itemBuilder: (context, index){
+                      return CartItem(cartList[index]);
+                    },
+                  );
+                },
+              ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: CartBottom(),
+                )
+              ],
+            );
+          }else{
+            return Text('正在加载');
+          }
+        },
+      )
+    );
+  }
+
+  Future<String> _getCartInfo(BuildContext context) async{
+    await Provide.value<CartProvide>(context).getCartInfo();
+    return 'end';
+  }
+}
+
+
+
+/*class CartPage extends StatefulWidget {
   @override
   _CartPageState createState() => _CartPageState();
 }
@@ -36,7 +87,7 @@ class _CartPageState extends State<CartPage> {
             onPressed: (){
               _clear();
             },
-            child: Text('删除'),
+            child: Text('清空'),
           )
         ],
       ),
@@ -46,7 +97,7 @@ class _CartPageState extends State<CartPage> {
   //增加方法
   void _add()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String temp = 'ajsjalksdjlkja';
+    String temp = '周博是最棒的！';
     list.add(temp);
     prefs.setStringList('testInfo', list);
     _show();
@@ -74,5 +125,5 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-}
+}*/
 
