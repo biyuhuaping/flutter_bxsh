@@ -235,8 +235,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
         }catch(e){
           print('进入页面第一次初始化${e}');
         }
-
-        if(data.goodsList.length > 0){
+        if(data.goodsList != null && data.goodsList.length > 0){
           return Expanded(
             child: Container(
               width: ScreenUtil().setWidth(570),

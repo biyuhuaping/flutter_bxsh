@@ -5,19 +5,65 @@ import 'category_page.dart';
 import 'cart_page.dart';
 import 'member_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provide/provide.dart';
+import '../provide/currentIndex.dart';
 
-// class IndexPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('百姓生活+'),),
-//       body: Center(
-//         child: Text('百姓生活+'),
-//       ),
-//     );
-//   }
-// }
+class IndexPage extends StatelessWidget {
+  final List<BottomNavigationBarItem> bottomTabs = [
+    BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.home),
+        // ignore: deprecated_member_use
+        title: Text('首页')),
+    BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.search),
+        // ignore: deprecated_member_use
+        title: Text('分类')),
+    BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.shopping_cart),
+        // ignore: deprecated_member_use
+        title: Text('购物车')),
+    BottomNavigationBarItem(
+        icon: Icon(CupertinoIcons.profile_circled),
+        // ignore: deprecated_member_use
+        title: Text('会员中心')),
+  ];
 
+  final List<Widget> tabbarViews = [
+    HomePage(),
+    CateGoryPage(),
+    CartPage(),
+    MemberPage()
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenUtil.init(context,designSize: Size(750, 1334), allowFontScaling: false);
+
+    return Provide<CurrentIndexProvide>(
+      builder: (context, child, val){
+        int currentIndex = Provide.value<CurrentIndexProvide>(context).currentIndex;
+        return Scaffold(
+            backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: currentIndex,
+              items: bottomTabs,
+              onTap: (index){
+                Provide.value<CurrentIndexProvide>(context).changeIndex(index);
+              },
+            ),
+            body: IndexedStack(
+              index: currentIndex,
+              children: tabbarViews,
+            )
+        );
+      }
+    );
+  }
+}
+
+
+/*
 class IndexPage extends StatefulWidget {
   @override
   _IndexPageState createState() => _IndexPageState();
@@ -89,4 +135,4 @@ class _IndexPageState extends State<IndexPage> {
       )
     );
   }
-}
+}*/

@@ -13,6 +13,7 @@ class CartBottom extends StatelessWidget {
         child: Provide<CartProvide>(
           builder: (context,child,childCategory){
             return  Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 selectAllBtn(context),
                 allPriceArea(context),
@@ -46,48 +47,49 @@ class CartBottom extends StatelessWidget {
   // 合计区域
   Widget allPriceArea(context){
     double allPrice = Provide.value<CartProvide>(context).allPrice;
-    return Container(
-      width: ScreenUtil().setWidth(430),
-      alignment: Alignment.centerRight,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerRight,
-                width: ScreenUtil().setWidth(280),
-                child: Text(
-                  '合计：',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(36)
+    return Expanded(
+      child: Container(
+        alignment: Alignment.centerRight,
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '合计：',
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(36)
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                width: ScreenUtil().setWidth(150),
-                child: Text(
-                  '¥${allPrice}',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(36),
-                    color: Colors.red
+                Container(
+                  alignment: Alignment.centerLeft,
+                  // width: ScreenUtil().setWidth(150),
+                  child: Text(
+                    '¥${allPrice.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(36),
+                        color: Colors.red
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Container(
-            width: ScreenUtil().setWidth(430),
-            alignment: Alignment.centerRight,
-            child: Text(
-              '满10元免配送费，预购免配送费',
-              style: TextStyle(
-                  color: Colors.black38,
-                  fontSize: ScreenUtil().setSp(22)
-              ),
+              ],
             ),
-          )
-        ],
+            Container(
+              // width: ScreenUtil().setWidth(430),
+              alignment: Alignment.centerRight,
+              child: Text(
+                '满10元免配送费，预购免配送费',
+                style: TextStyle(
+                    color: Colors.black38,
+                    fontSize: ScreenUtil().setSp(22)
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -96,8 +98,8 @@ class CartBottom extends StatelessWidget {
   Widget goButton(context){
     int allGoodsCount = Provide.value<CartProvide>(context).allGoodsCount;
     return Container(
-      width: ScreenUtil().setWidth(160),
-      padding: EdgeInsets.only(left: 10),
+      // width: ScreenUtil().setWidth(160),
+      margin: EdgeInsets.only(left: 10,right: 10),
       child: InkWell(
         onTap: (){},
         child: Container(
