@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provide/provide.dart';
 import '../provide/cart.dart';
 import './cart_page/cart_item.dart';
 import './cart_page/cart_bottom.dart';
+import '../provide/currentIndex.dart';
 
 
 
@@ -16,7 +19,63 @@ class CartPage extends StatelessWidget {
       body: FutureBuilder(
         future: _getCartInfo(context),
         builder: (context, snapshot){
-          if(snapshot.hasData){
+          return Provide<CartProvide>(
+              builder: (context, child, childCategory){
+                List cartList = Provide.value<CartProvide>(context).cartList;
+                print('==========${cartList.length}=======');
+                if(cartList.length > 0){
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: cartList.length,
+                          itemBuilder: (context, index){
+                            return CartItem(cartList[index]);
+                          },
+                        ),
+                      ),
+                      CartBottom(),
+                    ],
+                  );
+                }else{
+                  return Scaffold(
+                    // backgroundColor: Colors.orange,
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('购物车是空的'),
+                          InkWell(
+                            onTap: (){
+                              Provide.value<CurrentIndexProvide>(context).changeIndex(0);
+                            },
+                            child: Container(
+                              // color: Colors.red,
+                              margin: EdgeInsets.only(top: 10),
+                              width: ScreenUtil().setWidth(220),
+                              height: ScreenUtil().setHeight(60),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.all(Radius.circular(4)),
+                              ),
+                              child: Text(
+                                  '随便逛逛',
+                                style: TextStyle(
+                                  color: Colors.white
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              }
+          );
+          /*if(snapshot.hasData){
             return Stack(
               children: <Widget>[
                 Provide<CartProvide>(
@@ -39,7 +98,7 @@ class CartPage extends StatelessWidget {
             );
           }else{
             return Text('正在加载');
-          }
+          }*/
         },
       )
     );

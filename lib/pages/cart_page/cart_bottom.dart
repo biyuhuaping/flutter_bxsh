@@ -7,7 +7,7 @@ class CartBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.all(5.0),
+        padding: EdgeInsets.all(5.0),
         color: Colors.white,
         width: ScreenUtil().setWidth(750),
         child: Provide<CartProvide>(

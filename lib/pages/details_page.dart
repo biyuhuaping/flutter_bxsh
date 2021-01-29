@@ -13,6 +13,7 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -22,31 +23,33 @@ class DetailsPage extends StatelessWidget {
         ),
         title: Text('商品'),
       ),
-      body: FutureBuilder(
-        future: _getBackInfo(context),
-        builder: (context, snapshot){
-          if(snapshot.hasData){
-            return Stack(
-              children: <Widget>[
-                ListView(
-                  children: <Widget>[
-                    DetailsTopArea(),
-                    DetailsExplain(),
-                    DetailsTabBar(),
-                    DetailsWeb(),
-                  ],
-                ),
-                Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: DetailsBottom()
-                )
-              ],
-            );
-          }else{
-            return Text('加载中........');
-          }
-        },
+      body: SafeArea(
+        child: FutureBuilder(
+          future: _getBackInfo(context),
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              return Stack(
+                children: <Widget>[
+                  ListView(
+                    children: <Widget>[
+                      DetailsTopArea(),
+                      DetailsExplain(),
+                      DetailsTabBar(),
+                      DetailsWeb(),
+                    ],
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: DetailsBottom()
+                  )
+                ],
+              );
+            }else{
+              return Text('加载中........');
+            }
+          },
+        ),
       ),
     );
   }
