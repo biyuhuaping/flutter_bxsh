@@ -9,6 +9,7 @@ import './provide/currentIndex.dart';
 import 'package:fluro/fluro.dart';
 import './routers/routes.dart';
 import './routers/application.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   var childCategory = ChildCategory();
@@ -28,6 +29,30 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    final router = FluroRouter();
+    Routes.configureRoutes(router);
+    Application.router = router;
+
+    return ScreenUtilInit(
+      designSize:Size(750, 1334),
+      allowFontScaling: false,
+      builder: () => MaterialApp(
+          title: '百姓生活+',
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: Application.router.generator,
+          theme: ThemeData(
+          primaryColor: Colors.pink
+      ),
+      home: IndexPage(),
+    ),
+    );
+  }
+}
+
+class MyApp1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 

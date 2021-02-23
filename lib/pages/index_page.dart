@@ -4,7 +4,6 @@ import 'home_page.dart';
 import 'category_page.dart';
 import 'cart_page.dart';
 import 'member_page.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provide/provide.dart';
 import '../provide/currentIndex.dart';
 
@@ -37,8 +36,6 @@ class IndexPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,designSize: Size(750, 1334), allowFontScaling: false);
-
     return Provide<CurrentIndexProvide>(
       builder: (context, child, val){
         int currentIndex = Provide.value<CurrentIndexProvide>(context).currentIndex;
