@@ -4,7 +4,7 @@ import '../service/service_method.dart';
 import 'dart:convert';
 import '../model/category.dart';
 import '../model/categoryGoodsList.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import '../provide/child_category.dart';
 import '../provide/category_goods_list.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -54,7 +54,7 @@ class _LeftCaetgoryNavState extends State<LeftCaetgoryNav> {
 
   @override
   Widget build(BuildContext context) {
-    return Provide<ChildCategory>(
+    return Consumer<ChildCategory>(
       builder: (context, child, val){
         _getGoodsList(context);
         // listIndex = val.categoryIndex;
@@ -88,7 +88,7 @@ class _LeftCaetgoryNavState extends State<LeftCaetgoryNav> {
         var childList = list[index].bxMallSubDto;
         var categoryId = list[index].mallCategoryId;
         // Provide.value<ChildCategory>(context).changeCategory(categoryId,index);
-        Provide.value<ChildCategory>(context).getChildCategory(childList,categoryId);
+        Provider.of<ChildCategory>(context,listen: false).getChildCategory(childList,categoryId);
         _getGoodsList(context,categoryId: categoryId);
       },
       child: Container(
@@ -114,22 +114,22 @@ class _LeftCaetgoryNavState extends State<LeftCaetgoryNav> {
         list = category.data;
         // Provide.value<ChildCategory>(context).getChildCategory(list[0].bxMallSubDto,'4');
       });
-      Provide.value<ChildCategory>(context).getChildCategory(list[0].bxMallSubDto,'4');
+      Provider.of<ChildCategory>(context,listen: false).getChildCategory(list[0].bxMallSubDto,'4');
     });
   }
 
   //left得到商品列表数据
   void _getGoodsList(context,{String categoryId}){
     var data = {
-      'categoryId':categoryId==null?Provide.value<ChildCategory>(context).categoryId:categoryId,
-      'categorySubId':Provide.value<ChildCategory>(context).subId,
+      'categoryId':categoryId==null?Provider.of<ChildCategory>(context,listen: false).categoryId:categoryId,
+      'categorySubId':Provider.of<ChildCategory>(context,listen: false).subId,
       'page':1
     };
     request('getMallGoods',formData:data ).then((val){
       var data = json.decode(val.toString());
       CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
       // Provide.value<CategoryGoodsList>(context).getGoodsList(goodsList.data);
-      Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
+      Provider.of<CategoryGoodsListProvide>(context,listen: false).getGoodsList(goodsList.data);
     });
   }
 }
@@ -145,8 +145,8 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
   //List list = ['111','222','333','444','555','666','777','888','999','000'];
   @override
   Widget build(BuildContext context) {
-    return Provide<ChildCategory>(
-      builder: (context,child,childCategory){
+    return Consumer<ChildCategory>(
+      builder: (context,childCategory,child){
         return Container(
           width: ScreenUtil().setWidth(570),
           height: ScreenUtil().setHeight(80),
@@ -170,11 +170,11 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
 
   Widget _rightInkWell(BxMallSubDto item, int index){
     bool isClick = false;
-    isClick = (index == Provide.value<ChildCategory>(context).childIndex)?true:false;
+    isClick = (index == Provider.of<ChildCategory>(context,listen: false).childIndex)?true:false;
 
     return InkWell(
       onTap: (){
-        Provide.value<ChildCategory>(context).changeChildIndex(index, item.mallSubId);
+        Provider.of<ChildCategory>(context,listen: false).changeChildIndex(index, item.mallSubId);
         _getGoodsList(context, item.mallSubId);
       },
       child: Container(
@@ -192,7 +192,7 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
   //right得到商品列表数据
   void _getGoodsList(context,String categorySubId) {
     var data = {
-      'categoryId':Provide.value<ChildCategory>(context).categoryId,
+      'categoryId':Provider.of<ChildCategory>(context,listen: false).categoryId,
       'categorySubId':categorySubId,
       'page':1
     };
@@ -203,10 +203,10 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
       // Provide.value<CategoryGoodsList>(context).getGoodsList(goodsList.data);
       if(goodsList.data == null){
         print('>>>>>>>>>>>>>>>>>>>>>>>空的！！');
-        Provide.value<CategoryGoodsListProvide>(context).getGoodsList([]);
+        Provider.of<CategoryGoodsListProvide>(context,listen: false).getGoodsList([]);
       }else{
         print('>>>>>>>>>>>>>>>>>>>>>>>>有！！');
-        Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
+        Provider.of<CategoryGoodsListProvide>(context,listen: false).getGoodsList(goodsList.data);
       }
     });
   }
@@ -225,10 +225,10 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Provide<CategoryGoodsListProvide>(
-      builder: (context, child, data){
+    return Consumer<CategoryGoodsListProvide>(
+      builder: (context, data, child){
         try{
-          if(Provide.value<ChildCategory>(context).page == 1){
+          if(Provider.of<ChildCategory>(context,listen: false).page == 1){
             //列表位置滚回最上边
             scrollController.jumpTo(0.0);
           }
@@ -246,7 +246,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
                     textColor: Colors.pink,
                     infoColor: Colors.pink,
                     showInfo: true,
-                    noMoreText: Provide.value<ChildCategory>(context).noMoreText,
+                    noMoreText: Provider.of<ChildCategory>(context,listen: false).noMoreText,
                     // infoText: '加载中',
                     loadReadyText: '上拉加载……'
                 ),
@@ -265,7 +265,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
                 // },
                 onLoad: () async {
                   //加载更多
-                  if(Provide.value<ChildCategory>(context).noMoreText == '没有更多了'){
+                  if(Provider.of<ChildCategory>(context,listen: false).noMoreText == '没有更多了'){
                     Fluttertoast.showToast(
                         msg: "已经到底了",
                         toastLength: Toast.LENGTH_SHORT,
@@ -292,20 +292,20 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
 
   //上拉加载更多的方法
   void _getMoreList(){
-    Provide.value<ChildCategory>(context).addPage();
+    Provider.of<ChildCategory>(context,listen: false).addPage();
     var data = {
-      'categoryId':Provide.value<ChildCategory>(context).categoryId,
-      'categorySubId':Provide.value<ChildCategory>(context).subId,
-      'page':Provide.value<ChildCategory>(context).page
+      'categoryId':Provider.of<ChildCategory>(context,listen: false).categoryId,
+      'categorySubId':Provider.of<ChildCategory>(context,listen: false).subId,
+      'page':Provider.of<ChildCategory>(context,listen: false).page
     };
 
     request('getMallGoods',formData:data ).then((val){
       var  data = json.decode(val.toString());
       CategoryGoodsListModel goodsList=  CategoryGoodsListModel.fromJson(data);
       if(goodsList.data == null){
-        Provide.value<ChildCategory>(context).changeNoMore('没有更多了');
+        Provider.of<ChildCategory>(context,listen: false).changeNoMore('没有更多了');
       }else{
-        Provide.value<CategoryGoodsListProvide>(context).addGoodsList(goodsList.data);
+        Provider.of<CategoryGoodsListProvide>(context,listen: false).addGoodsList(goodsList.data);
       }
     });
   }

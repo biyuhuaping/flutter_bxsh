@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../model/cartInfo.dart';
 import 'cart_count.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import '../../provide/cart.dart';
 
 class CartItem extends StatelessWidget {
@@ -39,7 +39,7 @@ class CartItem extends StatelessWidget {
         activeColor: Colors.pink,
         onChanged: (bool val){
           item.isCheck = val;
-          Provide.value<CartProvide>(context).changeCheckState(item);
+          Provider.of<CartProvide>(context,listen: false).changeCheckState(item);
         },
       ),
     );
@@ -85,7 +85,7 @@ class CartItem extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
             child: InkWell(
               onTap: (){
-                Provide.value<CartProvide>(context).deleteOneGoods(item.goodsId);
+                Provider.of<CartProvide>(context,listen: false).deleteOneGoods(item.goodsId);
               },
               child: Icon(
                 Icons.delete_forever,

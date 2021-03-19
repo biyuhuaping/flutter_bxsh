@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import '../provide/cart.dart';
 import './cart_page/cart_item.dart';
 import './cart_page/cart_bottom.dart';
@@ -19,9 +19,9 @@ class CartPage extends StatelessWidget {
       body: FutureBuilder(
         future: _getCartInfo(context),
         builder: (context, snapshot){
-          return Provide<CartProvide>(
-              builder: (context, child, childCategory){
-                List cartList = Provide.value<CartProvide>(context).cartList;
+          return Consumer<CartProvide>(
+              builder: (context, childCategory, child){
+                List cartList = childCategory.cartList;
                 print('==========${cartList.length}=======');
                 if(cartList.length > 0){
                   return Column(
@@ -48,7 +48,7 @@ class CartPage extends StatelessWidget {
                           Text('购物车是空的'),
                           InkWell(
                             onTap: (){
-                              Provide.value<CurrentIndexProvide>(context).changeIndex(0);
+                              Provider.of<CurrentIndexProvide>(context,listen: false).changeIndex(0);
                             },
                             child: Container(
                               // color: Colors.red,
@@ -105,7 +105,7 @@ class CartPage extends StatelessWidget {
   }
 
   Future<String> _getCartInfo(BuildContext context) async{
-    await Provide.value<CartProvide>(context).getCartInfo();
+    await Provider.of<CartProvide>(context,listen: false).getCartInfo();
     return 'end';
   }
 }

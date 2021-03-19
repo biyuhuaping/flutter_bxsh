@@ -11,6 +11,8 @@ class CartProvide with ChangeNotifier{
   bool isAllCheck = true; //是否全选
 
 
+
+
   save(goodsId,goodsName,count,price,images) async{
     //初始化SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();

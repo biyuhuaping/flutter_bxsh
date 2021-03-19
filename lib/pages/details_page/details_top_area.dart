@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import '../../provide/details_info.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailsTopArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provide<DetailsInfoProvide>(
+    return Consumer<DetailsInfoProvide>(
       builder: (context,child,val){
-        var goodsInfo = Provide.value<DetailsInfoProvide>(context).goodsInfo.data.goodInfo;
+        var goodsInfo = Provider.of<DetailsInfoProvide>(context).goodsInfo.data.goodInfo;
         if(goodsInfo != null){
           return Container(
             color: Colors.white,

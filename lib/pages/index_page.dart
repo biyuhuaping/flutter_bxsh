@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bxsh/provide/child_category.dart';
 import 'home_page.dart';
 import 'category_page.dart';
 import 'cart_page.dart';
 import 'member_page.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import '../provide/currentIndex.dart';
 
 class IndexPage extends StatelessWidget {
@@ -36,17 +37,17 @@ class IndexPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provide<CurrentIndexProvide>(
-      builder: (context, child, val){
-        int currentIndex = Provide.value<CurrentIndexProvide>(context).currentIndex;
+    return Consumer<CurrentIndexProvide>(
+      builder: (context, currentIndexProvide, child){
+        int currentIndex = currentIndexProvide.currentIndex;
         return Scaffold(
             backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               currentIndex: currentIndex,
               items: bottomTabs,
-              onTap: (index){
-                Provide.value<CurrentIndexProvide>(context).changeIndex(index);
+              onTap: (index){ //切换导航卡
+                currentIndexProvide.changeIndex(index);
               },
             ),
             body: IndexedStack(
@@ -54,11 +55,10 @@ class IndexPage extends StatelessWidget {
               children: tabbarViews,
             )
         );
-      }
+      },
     );
   }
 }
-
 
 /*
 class IndexPage extends StatefulWidget {

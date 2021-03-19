@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import '../provide/details_info.dart';
 import './details_page/details_top_area.dart';
 import './details_page/details_explain.dart';
@@ -55,7 +55,7 @@ class DetailsPage extends StatelessWidget {
   }
 
   Future _getBackInfo(BuildContext context )async{
-    await  Provide.value<DetailsInfoProvide>(context).getGoodsInfo(goodsId);
+    await  Provider.of<DetailsInfoProvide>(context).getGoodsInfo(goodsId);
     return '完成加载';
   }
 }

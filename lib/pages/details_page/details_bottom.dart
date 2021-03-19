@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import '../../provide/cart.dart';
 import '../../provide/details_info.dart';
 import '../../provide/currentIndex.dart';
@@ -9,7 +9,7 @@ class DetailsBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    var goodsInfo = Provide.value<DetailsInfoProvide>(context).goodsInfo.data.goodInfo;
+    var goodsInfo = Provider.of<DetailsInfoProvide>(context).goodsInfo.data.goodInfo;
     var goodsId = goodsInfo.goodsId;
     var goodsName = goodsInfo.goodsName;
     var count = 1;
@@ -26,7 +26,7 @@ class DetailsBottom extends StatelessWidget {
             children: [
               InkWell(
                 onTap: (){
-                  Provide.value<CurrentIndexProvide>(context).changeIndex(2);
+                  Provider.of<CurrentIndexProvide>(context, listen: false).changeIndex(2);
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -39,9 +39,8 @@ class DetailsBottom extends StatelessWidget {
                   ),
                 ),
               ),
-              Provide<CartProvide>(
+              Consumer<CartProvide>(
                 builder: (context,child,val){
-                  int goodsCount = Provide.value<CartProvide>(context).allGoodsCount;
                   return Positioned(
                     top: 0,
                     right: 5,
@@ -53,11 +52,11 @@ class DetailsBottom extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.0)
                       ),
                       child: Text(
-                        '${goodsCount}',
+                        '${child.allGoodsCount}',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: ScreenUtil().setSp(22)
-                      ),),
+                      ))
                     ),
                   );
                 },
@@ -67,8 +66,8 @@ class DetailsBottom extends StatelessWidget {
 
 
           InkWell(
-            onTap: () async{
-              await Provide.value<CartProvide>(context).save(goodsId, goodsName, count, price, images);
+            onTap: (){
+               Provider.of<CartProvide>(context,listen: false).save(goodsId, goodsName, count, price, images);
             },
             child: Container(
               alignment: Alignment.center,
@@ -87,7 +86,7 @@ class DetailsBottom extends StatelessWidget {
 
           InkWell(
             onTap: () async{
-              await Provide.value<CartProvide>(context).remove();
+              await Provider.of<CartProvide>(context,listen: false).remove();
             },
             child: Container(
               alignment: Alignment.center,
