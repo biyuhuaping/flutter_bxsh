@@ -166,6 +166,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                       Text(
                         '￥${val['price']}',
                         style: TextStyle(color:Colors.black26,decoration: TextDecoration.lineThrough),
+                        textAlign:TextAlign.center,
                       )
                     ],
                   )
