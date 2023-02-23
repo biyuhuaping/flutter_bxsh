@@ -59,7 +59,7 @@ class DetailsTopArea extends StatelessWidget {
       padding: EdgeInsets.only(left: 15.0),
       margin: EdgeInsets.only(top: 8.0),
       child: Text(
-        '编号:${num}',
+        '编号:$num',
         style: TextStyle(
           color: Colors.black26
         ),
@@ -83,7 +83,7 @@ class DetailsTopArea extends StatelessWidget {
             ),
           ),
           Text(
-            '市场价:￥${oriPrice}',
+            '市场价:￥$oriPrice',
             style: TextStyle(
                 color: Colors.black26,
                 decoration: TextDecoration.lineThrough

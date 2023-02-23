@@ -307,7 +307,7 @@ class LeaderPhone extends StatelessWidget {
   }
 
   void _launchURL() async{
-    print('电话号码：${leaderPhone}');
+    print('电话号码：$leaderPhone');
     String url = 'tel:' + leaderPhone;//'https://www.baidu.com';
     if(await canLaunch(url)){
       await launch(url);

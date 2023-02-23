@@ -107,7 +107,7 @@ class CartBottom extends StatelessWidget {
             borderRadius: BorderRadius.circular(3.0)
           ),
           child: Text(
-            '结算(${allGoodsCount})',
+            '结算($allGoodsCount)',
             style: TextStyle(
                 color: Colors.white
             ),
