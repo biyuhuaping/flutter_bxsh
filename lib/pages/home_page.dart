@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   Widget build(BuildContext context) {
     var formData = {'lon':'115.02932','lat':'35.76189'};
     return Scaffold(
-      appBar: AppBar(title: Text('百姓生活+'),),
+      appBar: AppBar(title: Text('百姓生活+'), backgroundColor: Colors.pink,),
       body: FutureBuilder(
         future:request('homePageContext',formData:formData),
         builder: (context, snapshot){

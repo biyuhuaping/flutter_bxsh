@@ -14,7 +14,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        title: Text('购物车'),
+        title: Text('购物车'), backgroundColor: Colors.pink,
         ),
       body: FutureBuilder(
         future: _getCartInfo(context),

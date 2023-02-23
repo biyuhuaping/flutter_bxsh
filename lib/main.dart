@@ -53,16 +53,18 @@ class MyApp extends StatelessWidget {
 
     return ScreenUtilInit(
       designSize:Size(750, 1334),
-      allowFontScaling: false,
-      builder: () => MaterialApp(
+      // allowFontScaling: false,
+      builder: (context, child){
+        return MaterialApp(
           title: '百姓生活+',
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Application.router.generator,
           theme: ThemeData(
-          primaryColor: Colors.pink
-      ),
-      home: IndexPage(),
-    ),
+              primaryColor: Colors.pink,
+          ),
+          home: IndexPage(),
+        );
+      },
     );
   }
 }

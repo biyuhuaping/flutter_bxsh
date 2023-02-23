@@ -12,20 +12,20 @@ class IndexPage extends StatelessWidget {
   final List<BottomNavigationBarItem> bottomTabs = [
     BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.home),
-        // ignore: deprecated_member_use
-        title: Text('首页')),
+        label: '首页',
+        ),
     BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.search),
-        // ignore: deprecated_member_use
-        title: Text('分类')),
+        label: '分类'
+    ),
     BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.shopping_cart),
-        // ignore: deprecated_member_use
-        title: Text('购物车')),
+        label: '购物车'
+    ),
     BottomNavigationBarItem(
         icon: Icon(CupertinoIcons.profile_circled),
-        // ignore: deprecated_member_use
-        title: Text('会员中心')),
+        label: '会员中心'
+    ),
   ];
 
   final List<Widget> tabbarViews = [
@@ -43,6 +43,8 @@ class IndexPage extends StatelessWidget {
         return Scaffold(
             backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
             bottomNavigationBar: BottomNavigationBar(
+              unselectedItemColor: Colors.grey,//tabbar未选中的文字颜色
+              selectedItemColor: Colors.pink,//tabbar选中的文字颜色
               type: BottomNavigationBarType.fixed,
               currentIndex: currentIndex,
               items: bottomTabs,

@@ -6,7 +6,7 @@ class MemberPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('会员中心'),
+        title: Text('会员中心'), backgroundColor: Colors.pink,
       ),
       body: ListView(
         children: <Widget>[
