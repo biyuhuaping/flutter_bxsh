@@ -21,7 +21,7 @@ class DetailsPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text('商品'),
+        title: Text('商品详情'),
       ),
       body: SafeArea(
         child: FutureBuilder(

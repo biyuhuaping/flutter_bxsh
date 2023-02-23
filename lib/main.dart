@@ -60,7 +60,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Application.router.generator,
           theme: ThemeData(
-              primaryColor: Colors.pink,
+              // primaryColor: Colors.pink,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink, primary:Colors.pink),
           ),
           home: IndexPage(),
         );
@@ -83,7 +84,8 @@ class MyApp1 extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: Application.router.generator,
         theme: ThemeData(
-          primaryColor: Colors.pink
+          primaryColor: Colors.pink,
+
         ),
         home: IndexPage(),
       ),

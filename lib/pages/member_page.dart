@@ -6,8 +6,7 @@ class MemberPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('会员中心'), backgroundColor: Colors.pink,
-      ),
+        title: Text('会员中心'),),
       body: ListView(
         children: <Widget>[
           _topHeader(),
@@ -36,10 +35,10 @@ class MemberPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 10),
             child: Text(
-                '周博',
+                '用户姓名',
               style: TextStyle(
                 fontSize: ScreenUtil().setSp(36),
-                color: Colors.black54
+                color: Colors.white
               ),
             ),
           )
