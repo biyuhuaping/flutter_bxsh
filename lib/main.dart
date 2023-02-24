@@ -60,8 +60,10 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Application.router.generator,
           theme: ThemeData(
-              // primaryColor: Colors.pink,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink, primary:Colors.pink),
+              primarySwatch: Colors.pink,
+              splashColor: Colors.transparent,//flutter控件点击时的颜色，设为透明
+              highlightColor: Colors.transparent//flutter控件点击时的颜色，设为透明
+              // colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink, primary:Colors.pink),
           ),
           home: IndexPage(),
         );
